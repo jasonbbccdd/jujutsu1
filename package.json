@@ -1,5 +1,5 @@
 {
-  "name": "[your_project_name_here]",
+  "name": "jujutsu1",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
@@ -18,7 +18,7 @@
     "dotenv": "^16.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.2",
-    "express-compile-sass": "^4.0.0",
+    "express-compile-sass": "^3.0.4",
     "express-ejs-layouts": "^2.5.1",
     "formidable": "^2.0.1",
     "iron-session": "^6.0.5",

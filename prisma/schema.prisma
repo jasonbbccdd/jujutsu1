@@ -44,8 +44,9 @@ model Team {
   name            String
   code_2          String
   code_num        String?
-  conferderation  String
   association     String?
+  confederation   Confederation @relation(fields: [confederationId], references: [id])
+  confederationId Int
   group           Group  @relation(fields: [groupId], references: [id])
   groupId         Int
   @@unique([code_3, type])
@@ -56,7 +57,7 @@ model Group {
   code            String
   name            String?
   order           String
-  team            Team[]
+  teams           Team[]
   tournament      Tournament @relation(fields: [tournamentId], references: [id])
   tournamentId    Int
 }
@@ -69,6 +70,14 @@ model Tournament {
   stage           String
   stageName       String
   host            String?
-  group           Group[]
+  groups          Group[]
   @@unique([code, version, stage])
+}
+
+model Confederation {
+  id              Int  @id @default(autoincrement())
+  code            String
+  name            String?
+  teams           Team[]
+  @@unique([code])
 }
