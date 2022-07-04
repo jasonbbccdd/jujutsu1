@@ -1,0 +1,34 @@
+<%- contentFor('meta') %>
+<!-- anything between this line and before the next contentFor will be appended to meta -->
+<title>New Prediction</title>
+
+<%- contentFor('styles') %>
+<!-- anything between this line and before the next contentFor will be appended to styles -->
+
+<%- contentFor('scripts') %>
+<!-- anything between this line and before the next contentFor will be appended to scripts -->
+<script>
+  const generateTitle = () => {
+    return '<h1 class="text-center mb-3">New Prediction</h1>'
+  }
+
+  const generatePage = (info) => {
+    const $page = $('#pages-predictions-new')
+    const $title = generateTitle(info)
+
+    $page.html('').append($title)
+  }
+
+$(document).ready(() => {
+  generatePage({ isLoading: true })
+  // getWishlists()
+  // $('#pages-wishlists-index').on('submit', '#filter', handleFilterSubmit)
+  // $('#pages-wishlists-index').on('click', '#filter #reset-form', handleFilterReset)
+  // $('#pages-wishlists-index').on('click', '.page-link', handlePageChange)
+})
+</script>
+
+
+<%- contentFor('body') %>
+<!-- anything between this line and before the next contentFor will be appended to body -->
+<div id="pages-predictions-new" class="container"></div>
