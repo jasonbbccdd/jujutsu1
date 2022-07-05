@@ -8,6 +8,8 @@
 <%- contentFor('scripts') %>
 <!-- anything between this line and before the next contentFor will be appended to scripts -->
 <script>
+  const tournamentSelected = 'WC'
+
   const generateTitle = () => {
     return '<h1 class="text-center mb-3">New Prediction</h1>'
   }
@@ -19,9 +21,20 @@
     $page.html('').append($title)
   }
 
+  const getTournamentTeams = () => {
+  axios({
+    method: 'GET',
+    url: '/api/predictions/new'
+  }).then((resp) => {
+    // generatePage({ teams: resp.data.teams})
+    // console.dir( resp.data.teams)
+
+  })
+}
+
 $(document).ready(() => {
   generatePage({ isLoading: true })
-  // getWishlists()
+  getTournamentTeams()
   // $('#pages-wishlists-index').on('submit', '#filter', handleFilterSubmit)
   // $('#pages-wishlists-index').on('click', '#filter #reset-form', handleFilterReset)
   // $('#pages-wishlists-index').on('click', '.page-link', handlePageChange)

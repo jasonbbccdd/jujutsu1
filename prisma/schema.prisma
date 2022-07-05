@@ -11,73 +11,76 @@ datasource db {
 }
 
 model User {
-  id           Int     @id @default(autoincrement())
-  email        String  @unique
+  id           Int          @id @default(autoincrement())
+  email        String       @unique
   passwordHash String
   profile      Profile?
   predictions  Prediction[]
 }
 
 model Profile {
-  id          Int      @id @default(autoincrement())
-  firstName   String?
-  lastName    String?
-  username    String?
-  country     String?
-  avatar      String?
-  user        User     @relation(fields: [userId], references: [id])
-  userId      Int      @unique
+  id        Int     @id @default(autoincrement())
+  firstName String?
+  lastName  String?
+  username  String?
+  country   String?
+  avatar    String?
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int     @unique
 }
 
 model Prediction {
-  id          Int      @id @default(autoincrement())
-  title       String
-  detail      String?
-  user        User?    @relation(fields: [userId], references: [id])
-  userId      Int?
-}
-
-model Team {
-  id              Int  @id @default(autoincrement())
-  code_3          String
-  type            String
-  name            String
-  code_2          String
-  code_num        String?
-  association     String?
-  confederation   Confederation @relation(fields: [confederationId], references: [id])
-  confederationId Int
-  group           Group  @relation(fields: [groupId], references: [id])
-  groupId         Int
-  @@unique([code_3, type])
-}
-
-model Group {
-  id              Int  @id @default(autoincrement())
-  code            String
-  name            String?
-  order           String
-  teams           Team[]
-  tournament      Tournament @relation(fields: [tournamentId], references: [id])
-  tournamentId    Int
-}
-
-model Tournament {
-  id              Int  @id @default(autoincrement())
-  code            String
-  name            String
-  version         DateTime @db.Date
-  stage           String
-  stageName       String
-  host            String?
-  groups          Group[]
-  @@unique([code, version, stage])
+  id     Int     @id @default(autoincrement())
+  title  String
+  detail String?
+  user   User?   @relation(fields: [userId], references: [id])
+  userId Int?
 }
 
 model Confederation {
-  id              Int  @id @default(autoincrement())
-  code            String
-  name            String?
-  teams           Team[]
-  @@unique([code])
+  id    Int     @id @default(autoincrement())
+  code  String  @unique
+  name  String?
+  teams Team[]
+}
+
+model Team {
+  id              Int             @id @default(autoincrement())
+  codeNum         String?
+  code2           String
+  code3           String
+  type            String
+  name            String
+  association     String?
+  confederation   Confederation   @relation(fields: [confederationId], references: [id])
+  confederationId Int
+  teamsInGroups   TeamsInGroups[]
+
+  @@unique([code3, type])
+}
+
+model TeamsInGroups {
+  id      Int    @id @default(autoincrement())
+  order   Int
+  team    Team?  @relation(fields: [teamId], references: [id])
+  teamId  Int?
+  group   Group? @relation(fields: [groupId], references: [id])
+  groupId Int?
+}
+
+model Group {
+  id            Int             @id @default(autoincrement())
+  code          String
+  teamsInGroups TeamsInGroups[]
+  tournament    Tournament      @relation(fields: [tournamentId], references: [id])
+  tournamentId  Int
+}
+
+model Tournament {
+  id      Int      @id @default(autoincrement())
+  code    String
+  name    String
+  version DateTime @db.Date
+  host    String?
+  groups  Group[]
 }
