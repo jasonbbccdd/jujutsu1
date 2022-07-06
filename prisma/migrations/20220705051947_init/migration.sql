@@ -54,13 +54,13 @@ CREATE TABLE "Team" (
 );
 
 -- CreateTable
-CREATE TABLE "TeamsInGroups" (
+CREATE TABLE "TeamsOnGroups" (
     "id" SERIAL NOT NULL,
     "order" INTEGER NOT NULL,
     "teamId" INTEGER,
     "groupId" INTEGER,
 
-    CONSTRAINT "TeamsInGroups_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "TeamsOnGroups_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -105,10 +105,10 @@ ALTER TABLE "Prediction" ADD CONSTRAINT "Prediction_userId_fkey" FOREIGN KEY ("u
 ALTER TABLE "Team" ADD CONSTRAINT "Team_confederationId_fkey" FOREIGN KEY ("confederationId") REFERENCES "Confederation"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "TeamsInGroups" ADD CONSTRAINT "TeamsInGroups_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "TeamsOnGroups" ADD CONSTRAINT "TeamsOnGroups_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "TeamsInGroups" ADD CONSTRAINT "TeamsInGroups_groupId_fkey" FOREIGN KEY ("groupId") REFERENCES "Group"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "TeamsOnGroups" ADD CONSTRAINT "TeamsOnGroups_groupId_fkey" FOREIGN KEY ("groupId") REFERENCES "Group"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Group" ADD CONSTRAINT "Group_tournamentId_fkey" FOREIGN KEY ("tournamentId") REFERENCES "Tournament"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -7,38 +7,99 @@
 
 <%- contentFor('scripts') %>
 <!-- anything between this line and before the next contentFor will be appended to scripts -->
-<script>
-  const tournamentSelected = 'WC'
+<script src="/scripts/mapping.js"></script>
+<script src="/scripts/32.js"></script>
+<script src="/scripts/brackets.js"></script>
 
-  const generateTitle = () => {
-    return '<h1 class="text-center mb-3">New Prediction</h1>'
+<script>
+  // const _ = require("lodash");
+  let groups
+
+  const parseTournamentToGroups = (tournament) => {
+    let parsedGroups = {}
+    const { groups } = tournament
+
+    const sortedGroups = Array.from(groups).sort((a, b) => {
+      const nameA = a.code.toUpperCase(); // ignore upper and lowercase
+      const nameB = b.code.toUpperCase(); // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1;
+      } if (nameA > nameB) {
+        return 1;
+      }
+        return 0;
+    })
+
+    sortedGroups.forEach(sortedGroup => {
+      let obj = {}
+      sortedGroup.teamsOnGroups.forEach( group => {
+          obj[group.team.code3] = {
+            'id'          : group.team.code3,
+            'name'        : group.team.name,
+            'flag'        : group.team.code2,
+            'association' : group.team.association,
+          }
+          obj[group.team.code3]['qualification'] = {
+            'from'        : group.team.confederation.code,
+            'method'      : ''
+          }
+      })
+      // console.log(obj)
+      parsedGroups[sortedGroup.code] = obj
+      obj = {}
+    })
+    // console.log(parsedGroups)
+    return parsedGroups
+  }
+
+  const generateBackground = () => {
+    return (`<div id="background"><div class="overlay"></div></div>`)
+  }
+
+  const generateTitle = ({ isLoading, tournament }) => {
+
+    if (isLoading) return '<h1 class="text-center mb-3">LOADING...</h1>'
+    if (!tournament) return '<h1 class="text-center mb-3">Tournament Not Found</h1>'
+
+    return `<h1 class="text-center mb-3">${tournament.name}</h1>`
+  }
+
+  const generatePrediction = ({ isLoading } = {}) => {
+    if (isLoading) return ''
+
+    const template32 = generate32Cards()
+    // const templateBrackets = generateBrackets()
+
+    // return `${template32} ${templateBrackets}`
+    return `${template32} `
   }
 
   const generatePage = (info) => {
+    // console.log(info)
     const $page = $('#pages-predictions-new')
+    const $background = generateBackground()
     const $title = generateTitle(info)
+    // const $prediction = generatePrediction(info)
 
-    $page.html('').append($title)
+    $page.html('').append($background).append($title)
   }
 
   const getTournamentTeams = () => {
-  axios({
-    method: 'GET',
-    url: '/api/predictions/new'
-  }).then((resp) => {
-    // generatePage({ teams: resp.data.teams})
-    // console.dir( resp.data.teams)
+    axios({
+      method: 'GET',
+      url: '/api/predictions/new'
+    }).then((resp) => {
+      groups = parseTournamentToGroups(resp.data)
+      console.log('groupParsed')
+      console.log(groups)
+      generatePage({ tournament: resp.data })
+    })
+  }
 
+  $(document).ready(() => {
+    generatePage({ isLoading: true })
+    getTournamentTeams()
   })
-}
-
-$(document).ready(() => {
-  generatePage({ isLoading: true })
-  getTournamentTeams()
-  // $('#pages-wishlists-index').on('submit', '#filter', handleFilterSubmit)
-  // $('#pages-wishlists-index').on('click', '#filter #reset-form', handleFilterReset)
-  // $('#pages-wishlists-index').on('click', '.page-link', handlePageChange)
-})
 </script>
 
 

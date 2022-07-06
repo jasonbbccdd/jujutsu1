@@ -1,1 +1,28 @@
 @import 'node_modules/bootstrap/scss/bootstrap';
+
+#background {
+  margin: 0;
+  position: relative;
+  background-image: url("https://i.imgur.com/b3lc6MN.png");
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  min-width: 100vw;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  z-index: -1;
+  // animation: bgScroll 3s 1.8s forwards;
+
+    .overlay {
+      display: block;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      background-image: linear-gradient(to bottom left, #404040, transparent);
+      position: absolute;
+      opacity: 0.8;
+    }
+}
+
+  #navbar .navbar-brand img {
+      height: 80px;
+  }

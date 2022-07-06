@@ -34,7 +34,7 @@ const genTournament = async () => {
       create: [
         {
           code: 'A',
-          teamsInGroups: {
+          teamsOnGroups: {
             create: [
               {
                 order: 1,
@@ -105,7 +105,7 @@ const genTournament = async () => {
           }
         }, {
           code: 'B',
-          teamsInGroups: {
+          teamsOnGroups: {
             create: [
               {
                 order: 1,
@@ -176,7 +176,7 @@ const genTournament = async () => {
           }
         }, {
           code: 'C',
-          teamsInGroups: {
+          teamsOnGroups: {
             create: [
               {
                 order: 1,
@@ -247,7 +247,7 @@ const genTournament = async () => {
           }
         }, {
           code: 'D',
-          teamsInGroups: {
+          teamsOnGroups: {
             create: [
               {
                 order: 1,
@@ -318,7 +318,7 @@ const genTournament = async () => {
           }
         }, {
           code: 'E',
-          teamsInGroups: {
+          teamsOnGroups: {
             create: [
               {
                 order: 1,
@@ -389,7 +389,7 @@ const genTournament = async () => {
           }
         }, {
           code: 'F',
-          teamsInGroups: {
+          teamsOnGroups: {
             create: [
               {
                 order: 1,
@@ -460,7 +460,7 @@ const genTournament = async () => {
           }
         }, {
           code: 'G',
-          teamsInGroups: {
+          teamsOnGroups: {
             create: [
               {
                 order: 1,
@@ -531,7 +531,7 @@ const genTournament = async () => {
           }
         }, {
           code: 'H',
-          teamsInGroups: {
+          teamsOnGroups: {
             create: [
               {
                 order: 1,
@@ -611,7 +611,7 @@ const genTournament = async () => {
 }
 
 const seed = async () => {
-  // await genConfederations()
+  await genConfederations()
   await genTournament()
 }
 

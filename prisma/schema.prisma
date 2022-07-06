@@ -54,12 +54,12 @@ model Team {
   association     String?
   confederation   Confederation   @relation(fields: [confederationId], references: [id])
   confederationId Int
-  teamsInGroups   TeamsInGroups[]
+  teamsOnGroups   TeamsOnGroups[]
 
   @@unique([code3, type])
 }
 
-model TeamsInGroups {
+model TeamsOnGroups {
   id      Int    @id @default(autoincrement())
   order   Int
   team    Team?  @relation(fields: [teamId], references: [id])
@@ -71,7 +71,7 @@ model TeamsInGroups {
 model Group {
   id            Int             @id @default(autoincrement())
   code          String
-  teamsInGroups TeamsInGroups[]
+  teamsOnGroups TeamsOnGroups[]
   tournament    Tournament      @relation(fields: [tournamentId], references: [id])
   tournamentId  Int
 }
