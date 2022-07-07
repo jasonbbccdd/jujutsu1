@@ -88,6 +88,8 @@ const generate32CardsHTML = (groups) => {
   let template = ''
 
   Object.keys(groups).forEach((groupID) => {
+    console.log(groupID)
+    console.log(groups[groupID])
     template += generate32CardHTML(groupID, groups[groupID])
   })
 
@@ -95,5 +97,7 @@ const generate32CardsHTML = (groups) => {
 }
 
 const generate32Cards = (groups, $groupings) => {
+  console.log('generate32Cards: ', groups)
+  console.log('generate32Cards: ', $groupings)
   $groupings.append(generate32CardsHTML(groups))
 }

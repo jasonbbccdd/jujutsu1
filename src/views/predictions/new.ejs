@@ -1,4 +1,4 @@
-<%- contentFor('meta') %>
+<%# contentFor('meta') %>
 <!-- anything between this line and before the next contentFor will be appended to meta -->
 <title>New Prediction</title>
 
@@ -36,7 +36,7 @@
           obj[group.team.code3] = {
             'id'          : group.team.code3,
             'name'        : group.team.name,
-            'flag'        : group.team.code2,
+            'flag'        : `${flagURL}${size4X3}${group.team.code2}.svg`,
             'association' : group.team.association,
           }
           obj[group.team.code3]['qualification'] = {
@@ -44,30 +44,51 @@
             'method'      : ''
           }
       })
-      // console.log(obj)
       parsedGroups[sortedGroup.code] = obj
       obj = {}
     })
-    // console.log(parsedGroups)
     return parsedGroups
   }
 
+
   const generateBackground = () => {
-    return (`<div id="background"><div class="overlay"></div></div>`)
+    return (`<!-- Background image -->
+    <div class="bg-image"
+      style="background-image: url('https://i.imgur.com/b3lc6MN.png');
+      width: 1920px;
+      height: 1080px;">
+      <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
+        <div class="d-flex justify-content-center align-items-center h-100">
+          <h1 id="page-title" class="text-white mb-0">Page title</h1>
+        </div>
+      </div>
+    </div>
+    <!-- Background image -->
+    <main id="main" class="container text-white py-5 position-absolute">
+      <div id="groupings" class="row"></div>
+      <div id="brackets" class="row"></div>
+    </main>`
+    )
   }
 
   const generateTitle = ({ isLoading, tournament }) => {
-
-    if (isLoading) return '<h1 class="text-center mb-3">LOADING...</h1>'
-    if (!tournament) return '<h1 class="text-center mb-3">Tournament Not Found</h1>'
-
-    return `<h1 class="text-center mb-3">${tournament.name}</h1>`
+    //   if (isLoading) return '<h1 class="text-center mb-3">LOADING...</h1>'
+    //   if (!tournament) return '<h1 class="text-center mb-3">Tournament Not Found</h1>'
+    // return `<h1 class="text-center mb-3">${tournament.name}</h1>`
+      if (isLoading) return 'LOADING...'
+      if (!tournament) return 'Tournament Not Found'
+    return tournament.name
   }
 
   const generatePrediction = ({ isLoading } = {}) => {
     if (isLoading) return ''
-
-    const template32 = generate32Cards()
+    // GLOBAL | Elements
+    const $groupings = $('#groupings')
+    const $brackets = $('#brackets')
+    const $main = $('#main')
+    console.log('generatePredictions: ',groups)
+    console.log('generatePredictions: ',$groupings)
+    const template32 = generate32Cards(groups, $groupings)
     // const templateBrackets = generateBrackets()
 
     // return `${template32} ${templateBrackets}`
@@ -75,13 +96,26 @@
   }
 
   const generatePage = (info) => {
-    // console.log(info)
     const $page = $('#pages-predictions-new')
     const $background = generateBackground()
-    const $title = generateTitle(info)
-    // const $prediction = generatePrediction(info)
+    const title = generateTitle(info)
+    $page.html('').append($background)
+    $('#page-title').text(title)
 
-    $page.html('').append($background).append($title)
+
+    const delay = (ms) => new Promise(res => setTimeout(res, ms))
+
+    async function showConfetti() {
+      await delay(3000)
+      confetti()
+    }
+
+    showConfetti()
+    if (title === 'World Cup 2022') {
+      const $prediction = generatePrediction(info)
+
+    }
+
   }
 
   const getTournamentTeams = () => {
@@ -90,8 +124,6 @@
       url: '/api/predictions/new'
     }).then((resp) => {
       groups = parseTournamentToGroups(resp.data)
-      console.log('groupParsed')
-      console.log(groups)
       generatePage({ tournament: resp.data })
     })
   }
@@ -105,4 +137,4 @@
 
 <%- contentFor('body') %>
 <!-- anything between this line and before the next contentFor will be appended to body -->
-<div id="pages-predictions-new" class="container"></div>
+<div id="pages-predictions-new" class="container-fluid px-0 d-flex position-relative justify-content-center"></div>

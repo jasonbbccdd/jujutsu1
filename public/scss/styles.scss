@@ -1,28 +1,20 @@
 @import 'node_modules/bootstrap/scss/bootstrap';
+@import '~mdb-ui-kit/css/mdb.min.css';
 
-#background {
-  margin: 0;
-  position: relative;
-  background-image: url("https://i.imgur.com/b3lc6MN.png");
-  background-repeat: no-repeat;
-  min-height: 100vh;
-  min-width: 100vw;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  z-index: -1;
-  // animation: bgScroll 3s 1.8s forwards;
+body {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
 
-    .overlay {
-      display: block;
-      height: 100%;
-      width: 100%;
+  .importantRule { background-position: left -500px top 500px !important; }
+
+  .main {
+    .round-flag {
+      /* width: 100%;
+      height: 100%; */
+      width: 50px;
+      height: 50px;
+      text-align: center;
       object-fit: cover;
-      background-image: linear-gradient(to bottom left, #404040, transparent);
-      position: absolute;
-      opacity: 0.8;
     }
-}
-
-  #navbar .navbar-brand img {
-      height: 80px;
   }
+}

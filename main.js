@@ -8,6 +8,8 @@ import methodOverride from 'method-override'
 import moment from 'moment'
 import { ironSession } from 'iron-session/express'
 
+// import confetti from "https://cdn.skypack.dev/canvas-confetti"
+
 import parseData from './src/_middlewares/parse-data.js'
 // import addUserToLayout from './src/_middlewares/add-user-to-layout.js'
 
