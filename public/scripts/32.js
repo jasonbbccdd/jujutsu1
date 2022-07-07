@@ -1,9 +1,13 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 // GROUP | Generate New Group
+// eslint-disable-next-line no-unused-vars
 const generate32CardStandingHTML = (groupRanking, teamData) => {
   const rankingSwitch = (ranking) => ({
-    1: RANKING_1,
-    2: RANKING_2,
-    3: RANKING_3,
+    // eslint-disable-next-line no-undef
+    1: RANKING_1, // eslint-disable-next-line no-undef
+    2: RANKING_2, // eslint-disable-next-line no-undef
+    3: RANKING_3, // eslint-disable-next-line no-undef
     4: RANKING_4
   })[ranking]
 

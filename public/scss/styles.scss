@@ -68,29 +68,30 @@ body {
             border-width: 3px !important;
             border-color: rgba(0, 0, 0, 0.4) !important;
           }
+
+          .bracket-flag {
+            /* width: 100%;
+            height: 100%; */
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            object-fit: cover;
+          }
+
+          .bracket-winner-flag {
+            /* width: 100%;
+            height: 100%; */
+            width: auto;
+            height: 50px;
+            text-align: center;
+            object-fit: cover;
+          }
         }
 
 
 
 
 
-    // #main .bracket-flag {
-    //   /* width: 100%;
-    //   height: 100%; */
-    //   width: 50px;
-    //   height: 50px;
-    //   text-align: center;
-    //   object-fit: cover;
-    // }
-
-    // #main .bracket-winner-flag {
-    //   /* width: 100%;
-    //   height: 100%; */
-    //   width: auto;
-    //   height: 50px;
-    //   text-align: center;
-    //   object-fit: cover;
-    // }
 
 
 }

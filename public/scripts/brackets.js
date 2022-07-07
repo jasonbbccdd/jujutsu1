@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable quote-props */
+/* eslint-disable no-undef */
 const confederationColors = {
   'AFC': YELLOW_COLOR,
   'CAF': BLACK_COLOR,

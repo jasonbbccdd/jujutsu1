@@ -95,11 +95,11 @@
     // const template32 = generate32Cards(groups, $groupings)
     // const templateBrackets = generateBrackets()
       generate32Cards(groups, $groupings)
-        console.log('generatePrediction: ', $main)
-        console.log('generatePrediction: ', $brackets)
-        console.log('generatePrediction: ', groups)
       bind32($main, $brackets, groups)
 
+      generateBrackets(GEN_BRACKETS_ORDER, stages, $brackets)
+      bindBrackets($brackets)
+      
     // return `${template32} ${templateBrackets}`
     // console.log('template32: ', template32)
     // console.log('$template32: ', $(template32))
