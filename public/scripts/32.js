@@ -1,9 +1,5 @@
 // GROUP | Generate New Group
 const generate32CardStandingHTML = (groupRanking, teamData) => {
-  // console.log(teamData)
-  // console.log(groupRanking)
-  // console.dir(groupRanking)
-
   const rankingSwitch = (ranking) => ({
     1: RANKING_1,
     2: RANKING_2,
@@ -88,8 +84,6 @@ const generate32CardsHTML = (groups) => {
   let template = ''
 
   Object.keys(groups).forEach((groupID) => {
-    console.log(groupID)
-    console.log(groups[groupID])
     template += generate32CardHTML(groupID, groups[groupID])
   })
 
@@ -97,7 +91,5 @@ const generate32CardsHTML = (groups) => {
 }
 
 const generate32Cards = (groups, $groupings) => {
-  console.log('generate32Cards: ', groups)
-  console.log('generate32Cards: ', $groupings)
   $groupings.append(generate32CardsHTML(groups))
 }

@@ -36,7 +36,7 @@
           obj[group.team.code3] = {
             'id'          : group.team.code3,
             'name'        : group.team.name,
-            'flag'        : `${flagURL}${size4X3}${group.team.code2}.svg`,
+            'flag'        : `${flagURL}${size1x1}${group.team.code2}.svg`,
             'association' : group.team.association,
           }
           obj[group.team.code3]['qualification'] = {
@@ -64,7 +64,7 @@
       </div>
     </div>
     <!-- Background image -->
-    <main id="main" class="container text-white py-5 position-absolute">
+    <main id="main" class="container text-white py-2 position-absolute">
       <div id="groupings" class="row"></div>
       <div id="brackets" class="row"></div>
     </main>`
@@ -86,8 +86,6 @@
     const $groupings = $('#groupings')
     const $brackets = $('#brackets')
     const $main = $('#main')
-    console.log('generatePredictions: ',groups)
-    console.log('generatePredictions: ',$groupings)
     const template32 = generate32Cards(groups, $groupings)
     // const templateBrackets = generateBrackets()
 

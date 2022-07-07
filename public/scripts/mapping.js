@@ -12,8 +12,8 @@ const RANKING_3  = '<img class="rounded-circle" src="https://i.imgur.com/DCB0ivD
 const RANKING_4  = '<img class="rounded-circle" src="https://i.imgur.com/lCVq0Ko.png" style="margin-left: -10px; padding-right: 10px"/>'
 
 const flagURL = 'https://cf.eip.telegraph.co.uk/flags/'
-const size1X1 = '1X1/'
-const size4X3 = '4X3/'
+const size1x1 = '1x1/'
+const size4x3 = '4x3/'
 
 //  GLOBAL | Mapping
 const stages = {
