@@ -32,8 +32,12 @@ const controllersApiAuthSignup = async (req, res) => {
     const newUser = await prisma.user.create({
       data: {
         email: verifiedData.email,
-        avatar: verifiedData.avatar || 'https://lab-restful-api.s3.ap-northeast-2.amazonaws.com/profile.jpeg',
-        passwordHash: await bcrypt.hash(verifiedData.password, 10)
+        passwordHash: await bcrypt.hash(verifiedData.password, 10),
+        profile: {
+          create: {
+            avatar: verifiedData.avatar || 'https://lab-restful-api.s3.ap-northeast-2.amazonaws.com/profile.jpeg'
+          }
+        }
       }
     })
 

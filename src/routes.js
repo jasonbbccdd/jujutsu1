@@ -21,8 +21,8 @@ router.delete('/api/my/predictions/:id', authenticateUser('json'), (await import
 
 // API | PREDICTIONS
 router.get('/api/predictions', (await import('./controllers/api/predictions/index.js')).default)
-// router.get('/api/predictions/:id', (await import('./controllers/api/predictions/show.js')).default)
 router.get('/api/predictions/new', (await import('./controllers/api/predictions/new.js')).default)
+// router.get('/api/predictions/:id', (await import('./controllers/api/predictions/show.js')).default)
 
 // API | NOT FOUND
 router.use('/api', (await import('./controllers/api/not-found.js')).default)
@@ -42,8 +42,8 @@ router.get('/my/predictions', authenticateUser('html'), (await import('./control
 
 // PAGES | PREDICTIONS
 router.get('/predictions', (await import('./controllers/pages/predictions/index.js')).default)
-// router.get('/predictions/:id', (await import('./controllers/pages/predictions/show.js')).default)
 router.get('/predictions/new', (await import('./controllers/pages/predictions/new.js')).default)
+// router.get('/predictions/:id', (await import('./controllers/pages/predictions/show.js')).default)
 
 // PAGES | STATIC
 router.get('/', (await import('./controllers/pages/static/home.js')).default)

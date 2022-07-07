@@ -4,13 +4,13 @@ const replaceDynamicLinks = ({ isLoading, user } = {}) => {
 
   $('#navbar-dynamic-links').html(user ? `
     <li class="nav-item">
-      <a class="nav-link" href="/my/wishlists">My Wishlists</a>
+      <a class="nav-link" href="/my/predictions">My predictions</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="/my/profile/edit">My Profile</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="/my/wishlists/new">Create Wishlist</a>
+      <a class="nav-link" href="/my/predictions/new">Create Prediction</a>
     </li>
     <li class="nav-item">
       <a id="auth-logout" class="nav-link text-danger" href="#">Logout</a>

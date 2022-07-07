@@ -1,4 +1,6 @@
 import Client from '@prisma/client'
+import { faker } from '@faker-js/faker'
+import bcrypt from 'bcrypt'
 
 const prisma = new Client.PrismaClient()
 
@@ -610,9 +612,34 @@ const genTournament = async () => {
   })
 }
 
+const genUsers = async () => {
+  const promises = []
+
+  for (let i = 0; i < 10; i += 1) {
+    promises.push(prisma.user.create({
+      data: {
+        email: faker.internet.email(),
+        passwordHash: await bcrypt.hash('123456', 10),
+        profile: {
+          create: {
+            firstName: faker.name.firstName(),
+            lastName: faker.name.lastName(),
+            username: faker.internet.userName(),
+            country: faker.address.countryCode('alpha-2'),
+            avatar: faker.image.avatar()
+          }
+        }
+      }
+    }))
+  }
+
+  await Promise.all(promises)
+}
+
 const seed = async () => {
-  await genConfederations()
-  await genTournament()
+  // await genConfederations()
+  // await genTournament()
+  await genUsers()
 }
 
 seed()

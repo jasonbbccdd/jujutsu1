@@ -28,8 +28,10 @@ const controllersApiMyProfileUpdate = async (req, res) => {
       where: { id },
       data: {
         email: verifiedData.email,
-        avatar: verifiedData.avatar || currentUser.avatar || 'https://lab-restful-api.s3.ap-northeast-2.amazonaws.com/profile.jpeg',
-        ...verifiedData.password && { passwordHash: await bcrypt.hash(verifiedData.password, 10) }
+        ...verifiedData.password && { passwordHash: await bcrypt.hash(verifiedData.password, 10) },
+        profile: {
+          avatar: verifiedData.avatar || currentUser.avatar || 'https://lab-restful-api.s3.ap-northeast-2.amazonaws.com/profile.jpeg'
+        }
       }
     })
 
