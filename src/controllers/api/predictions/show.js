@@ -1,6 +1,5 @@
-import prisma from '../../../_helpers/prisma.js'
-import handleErrors from '../../../_helpers/handle-errors.js'
-import checkOwnership from './_check-ownership.js'
+import prisma from '../../_helpers/prisma.js'
+import handleErrors from '../../_helpers/handle-errors.js'
 
 const controllersApiPredictionsShow = async (req, res) => {
   try {
@@ -23,7 +22,4 @@ const controllersApiPredictionsShow = async (req, res) => {
   }
 }
 
-export default [
-  checkOwnership,
-  controllersApiPredictionsShow
-]
+export default controllersApiPredictionsShow

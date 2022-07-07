@@ -1,0 +1,78 @@
+<%- contentFor('styles') %>
+<%- contentFor('scripts') %>
+<script>
+const id = window.location.href.split('/').reverse()[0]
+
+const generateTitle = ({ isLoading, prediction } = {}) => {
+  if (isLoading) return `<div class="text-center">Loading...</div>`
+  if (!prediction) return `<h1 class="text-center mb-3">prediction ${id} Not Found!</h1>`
+
+  return `<h1 class="text-center mb-3">Prediction ${id}</h1>`
+}
+
+const generatePrediction = ({ isLoading, prediction } = {}) => {
+  if (isLoading || !prediction) return ''
+
+  return `
+    <div class="row">
+      <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+        <div class="card">
+          <div class="card-body text-center">
+            <img class="mb-2" src="${prediction.user.avatar}" alt="user avatar" width="150" />
+            <h5 class="card-title mb-2">${prediction.title}</h5>
+            <p class="card-text mb-2">${prediction.description}</p>
+
+            <div class="mb-2">
+              <a href="/my/predictions/${id}/edit" class="btn btn-primary btn-sm">Edit</a>
+              <button id="delete-prediction" class="btn btn-danger btn-sm">Delete</button>
+            </div>
+
+            <ul class="list-group">
+              ${prediction.items.map((item) => `<li class="list-group-item ${item.checked && 'text-decoration-line-through'}">${item.name}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  `
+}
+
+const generatePage = (info) => {
+  const $page = $('#pages-my-predictions-show')
+  const $title = generateTitle(info)
+  const $prediction = generatePrediction(info)
+
+  $page.html('').append($title).append($prediction)
+}
+
+const getPrediction = () => {
+  axios({
+    method: 'GET',
+    url: `/api/my/predictions/${id}`
+  }).then((resp) => {
+    generatePage({ prediction: resp.data })
+  }).catch((err) => {
+    generatePage()
+  })
+}
+
+const handleDelete = (e) => {
+  $(e.currentTarget).attr('disabled', true)
+
+  axios({
+    method: 'DELETE',
+    url: `/api/my/predictions/${id}`
+  }).then((resp) => {
+    window.location.href = '/my/predictions'
+  })
+}
+
+$(document).ready(() => {
+  generatePage({ isLoading: true })
+  getPrediction()
+  $('#pages-my-predictions-show').on('click', '#delete-prediction', handleDelete)
+})
+</script>
+
+<%- contentFor('body') %>
+<div id="pages-my-predictions-show" class="container"></div>

@@ -1,0 +1,117 @@
+<%- contentFor('styles') %>
+<%- contentFor('scripts') %>
+<script>
+const generateTitle = () => {
+  return '<h1 class="text-center mb-3">New Prediction</h1>'
+}
+
+const generateItemInputs = (values, errors) => {
+  const items = values?.items || []
+
+  return items.map((item, i) => {
+    return `
+      <div class="mb-3">
+        <label for="prediction-item-${i}-name" class="form-label">Item ${i + 1}</label>
+        <button class="delete-item btn btn-danger btn-sm float-end" data-index="${i}" type="button">Delete</button>
+        <input id="prediction-item-${i}-name" class="form-control ${errors?.items?.[i].name && 'is-invalid'}" name="items[${i}][name]" value="${item?.name || ''}"></input>
+        <div class="invalid-feedback">${errors?.items?.[i].name || ''}</div>
+      </div>
+      <div class="form-check mb-3">
+        <input id="prediction-item-${i}-checked" class="form-check-input" type="checkbox" name="items[${i}][checked]" ${item?.checked ? 'checked' : ''}>
+        <label for="prediction-item-${i}-checked" class="form-check-label">Received/Brought</label>
+      </div>
+    `
+  }).join('')
+}
+
+const generateForm = ({ prediction, errors } = {}) => {
+  return `
+    <div class="row">
+      <div id="form-wrapper" class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+        <form id="prediction-new-form">
+          <div class="mb-3">
+            <label for="prediction-title" class="form-label">Title</label>
+            <input
+              id="prediction-title"
+              class="form-control ${errors?.title && 'is-invalid'}"
+              name="title"
+              value="${prediction?.title || ''}"
+            ></input>
+            <div class="invalid-feedback">${errors?.title || ''}</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="prediction-description" class="form-label">Description (Optional)</label>
+            <textarea
+              id="prediction-description"
+              class="form-control ${errors?.description && 'is-invalid'}"
+              name="description"
+              rows="3"
+            >${prediction?.description || ''}</textarea>
+            <div class="invalid-feedback">${errors?.description || ''}</div>
+          </div>
+
+          <div class="mb-3">
+            <div class="mb-2 fw-bold">Items (Optional)</div>
+            ${generateItemInputs(prediction, errors)}
+            <div class="text-center">
+              <button id="add-prediction-item" class="btn btn-info btn-sm" type="button">Add Item</button>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  `
+}
+
+const generatePage = (info) => {
+  const $page = $('#pages-my-predictions-new')
+  const $title = generateTitle()
+  const $form = generateForm(info)
+
+  $page.html('').append($title).append($form)
+}
+
+const handleSubmit = (e) => {
+  e.preventDefault()
+
+  const data = new FormData(e.currentTarget)
+  $('#prediction-new-form button[type="submit"]').attr('disabled', true)
+
+  axios({
+    method: 'POST',
+    url: '/api/my/predictions',
+    data
+  }).then((resp) => {
+    window.location.href = `/my/predictions/${resp.data.id}`
+  }).catch((err) => {
+    generatePage({ prediction: parseFormData(data), errors: err.response.data })
+  })
+}
+
+const handleAddItem = () => {
+  const data = parseFormData(new FormData($('#prediction-new-form')[0]))
+  data.items = [...data?.items || [], { name: '', checked: false }]
+
+  generatePage({ prediction: data })
+}
+
+const handleRemoveItem = (e) => {
+  const data = parseFormData(new FormData($('#prediction-new-form')[0]))
+  data.items.splice($(e.target).data('index'), 1)
+
+  generatePage({ prediction: data })
+}
+
+$(document).ready(() => {
+  generatePage()
+  $('#pages-my-predictions-new').on('submit', '#prediction-new-form', handleSubmit)
+  $('#pages-my-predictions-new').on('click', '#add-prediction-item', handleAddItem)
+  $('#pages-my-predictions-new').on('click', '.delete-item', handleRemoveItem)
+})
+</script>
+
+<%- contentFor('body') %>
+<div id="pages-my-predictions-new" class="container"></div>

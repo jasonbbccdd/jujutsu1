@@ -7,6 +7,22 @@ body {
 
   .importantRule { background-position: left -500px top 500px !important; }
 
+  #page-title.scroll-up{
+    transform: translateY(100%);
+    animation: titleScroll cubic-bezier(0.770, 0.000, 0.175, 1.000) 1.8s forward;
+  }
+
+  @keyframes titleScroll {
+    from {
+      transform:
+        translateY(50%);
+    }
+    to {
+      transform:
+        translateY(0%);
+    }
+  }
+
   #main {
     .round-flag {
       /* width: 100%;

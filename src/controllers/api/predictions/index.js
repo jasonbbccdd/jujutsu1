@@ -1,10 +1,8 @@
-import prisma from '../../../_helpers/prisma.js'
-import handleErrors from '../../../_helpers/handle-errors.js'
+import prisma from '../../_helpers/prisma.js'
+import handleErrors from '../../_helpers/handle-errors.js'
 
-const controllersApiMyPredictionsIndex = async (req, res) => {
+const controllersApiPredictionsIndex = async (req, res) => {
   try {
-    const { session: { user: { id: userId } } } = req
-
     // Filters
     const q = req.query.q || ''
     const orderBy = req.query.orderBy || 'id'
@@ -17,7 +15,6 @@ const controllersApiMyPredictionsIndex = async (req, res) => {
 
     // Common Where Query
     const where = {
-      userId,
       OR: [
         {
           title: {
@@ -31,8 +28,8 @@ const controllersApiMyPredictionsIndex = async (req, res) => {
       ]
     }
 
-    const totalMyPredictions = await prisma.Prediction.count({ where })
-    const foundMyPredictions = await prisma.Prediction.findMany({
+    const totalPredictions = await prisma.prediction.count({ where })
+    const foundPredictions = await prisma.prediction.findMany({
       take,
       skip,
       where,
@@ -49,12 +46,12 @@ const controllersApiMyPredictionsIndex = async (req, res) => {
     })
 
     return res.status(200).json({
-      predictions: foundMyPredictions,
-      meta: { currentPage: page, totalPages: Math.ceil(totalMyPredictions / take) }
+      predictions: foundPredictions,
+      meta: { currentPage: page, totalPages: Math.ceil(totalPredictions / take) }
     })
   } catch (err) {
     return handleErrors(res, err)
   }
 }
 
-export default controllersApiMyPredictionsIndex
+export default controllersApiPredictionsIndex
