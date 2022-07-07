@@ -92,13 +92,18 @@
     const $groupings = $('#groupings')
     const $brackets = $('#brackets')
     const $main = $('#main')
-    const template32 = generate32Cards(groups, $groupings)
+    // const template32 = generate32Cards(groups, $groupings)
     // const templateBrackets = generateBrackets()
+      generate32Cards(groups, $groupings)
+        console.log('generatePrediction: ', $main)
+        console.log('generatePrediction: ', $brackets)
+        console.log('generatePrediction: ', groups)
+      bind32($main, $brackets, groups)
 
     // return `${template32} ${templateBrackets}`
-    console.log('template32: ', template32)
-    console.log('$template32: ', $(template32))
-    return `${template32} `
+    // console.log('template32: ', template32)
+    // console.log('$template32: ', $(template32))
+    // return `${template32} `
   }
 
   const generatePage = (info) => {
@@ -110,7 +115,8 @@
 
     showConfetti()
     if (title === 'World Cup 2022') {
-      const $prediction = generatePrediction(info)
+      // const $prediction = generatePrediction(info)
+      generatePrediction(info)
     }
     $('#page-title').addClass('scroll-up')
   }

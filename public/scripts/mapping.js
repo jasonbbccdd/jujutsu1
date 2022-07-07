@@ -91,100 +91,100 @@ const STAGES_MAPPING = {
   }
 }
 
-const bind32 = () => {
+const bind32 = ($main, $brackets, groups) => {
   $main.on('click', '.group-team', (e) => {
     const $elem = $(e.currentTarget)
-
     if (!$elem.hasClass('disabled')) {
       $elem.parent().find('.selected').removeClass('selected')
       $elem.addClass('selected')
     }
-})
+  })
 
-$main.on('click', '.group-standing', (e) => {
-  const $elem = $(e.currentTarget)
-  const $group = $elem.parents('.group')
-  const $selected = $group.find('.selected')
+  console.log('bind32: ', $main)
+  console.log('bind32: ', $brackets)
+  console.log('bind32: ', groups)
 
-  const groupID = $group.data('group-id')
-  const teamID = $selected.data('team-id')
-  const groupStandingIndex = $elem.data('group-standing-id')
+  $main.on('click', '.group-standing', (e) => {
+    const $elem = $(e.currentTarget)
+    const $group = $elem.parents('.group')
+    const $selected = $group.find('.selected')
 
-  var rankingStyleHTML = ""
+    const groupID = $group.data('group-id')
+    const teamID = $selected.data('team-id')
+    const groupStandingIndex = $elem.data('group-standing-id')
 
-  const confederationSwitch = (confederation) => ({
-    'AFC': YELLOW_COLOR,
-    'CAF': BLACK_COLOR,
-    'CONMEBOL': RED_COLOR,
-    'CONCACAF': BLUE_COLOR,
-    'OFC': CYAN_COLOR,
-    'UEFA': GREEN_COLOR
-  })[confederation]
+    var rankingStyleHTML = ""
 
-  const isStandingTaken = _.get(stages, `32.${groupID}[${groupStandingIndex}]`, null)
+    const confederationSwitch = (confederation) => ({
+      'AFC': YELLOW_COLOR,
+      'CAF': BLACK_COLOR,
+      'CONMEBOL': RED_COLOR,
+      'CONCACAF': BLUE_COLOR,
+      'OFC': CYAN_COLOR,
+      'UEFA': GREEN_COLOR
+    })[confederation]
 
-  if (!isStandingTaken && $selected.length > 0) {
-    const teamData = groups[groupID][teamID]
+    const isStandingTaken = _.get(stages, `32.${groupID}[${groupStandingIndex}]`, null)
 
-    _.set(stages, `32.${groupID}[${groupStandingIndex}]`, teamData)
-    $elem.html(generate32CardStandingHTML(groupStandingIndex+1,teamData))
+    if (!isStandingTaken && $selected.length > 0) {
+      const teamData = groups[groupID][teamID]
 
-    rankingStyleHTML += `background-color: ${confederationSwitch(teamData.qualification.from)} !important `
+      _.set(stages, `32.${groupID}[${groupStandingIndex}]`, teamData)
+      $elem.html(generate32CardStandingHTML(groupStandingIndex+1,teamData))
 
-    $elem.attr('style', rankingStyleHTML)
+      rankingStyleHTML += `background-color: ${confederationSwitch(teamData.qualification.from)} !important `
 
-    if (teamData.qualification.from === 'AFC') {
-      rankingStyleHTML += `; color: black !important`
       $elem.attr('style', rankingStyleHTML)
+
+      if (teamData.qualification.from === 'AFC') {
+        rankingStyleHTML += `; color: black !important`
+        $elem.attr('style', rankingStyleHTML)
+      }
+
+      $selected.removeClass('selected').addClass('disabled')
+      // $selected.addClass('glow-on-hover')
+      // console.dir($selected)
+
+      if (groupStandingIndex === 0 || groupStandingIndex === 1) {
+        const stagesMatchPosition = STAGES_MAPPING[32][`${groupID}${groupStandingIndex + 1}`]
+        const matchesIndex = stagesMatchPosition[0]
+        const teamIndex = stagesMatchPosition[1]
+
+        _.set(stages, `16.matches[${matchesIndex}][${teamIndex}]`, teamData)
+        generateBrackets(GEN_BRACKETS_ORDER, stages, $brackets)
+      }
     }
+    window.stages = stages
+  })
 
-    $selected.removeClass('selected').addClass('disabled')
-    // $selected.addClass('glow-on-hover')
-    // console.dir($selected)
+  $main.on('click', '.reset-btn', (e) => {
+    const $elem = $(e.currentTarget)
+    const $group = $elem.parents('.group')
 
-    if (groupStandingIndex === 0 || groupStandingIndex === 1) {
-      const stagesMatchPosition = STAGES_MAPPING[32][`${groupID}${groupStandingIndex + 1}`]
-      const matchesIndex = stagesMatchPosition[0]
-      const teamIndex = stagesMatchPosition[1]
+    const groupID = $group.data('group-id')
 
+    const groupFTeam = _.get(stages, `32.${groupID}[0]`, null)
+    const groupSTeam = _.get(stages, `32.${groupID}[1]`, null)
 
-      _.set(stages, `16.matches[${matchesIndex}][${teamIndex}]`, teamData)
-      generateBrackets(GEN_BRACKETS_ORDER, stages, $brackets)
+    // reset brackets
+    GEN_BRACKETS_ORDER.forEach((bracketID) => {
+      stages[bracketID].matches = stages[bracketID].matches.map((match) => {
+        return match.map((team) => {
+          const condition1 = groupFTeam && team?.id === groupFTeam.id
+          const condition2 = groupSTeam && team?.id === groupSTeam.id
 
-    }
-  }
+          if (condition1 || condition2) {
+            return null
+          }
 
-  window.stages = stages
-})
-
-$main.on('click', '.reset-btn', (e) => {
-  const $elem = $(e.currentTarget)
-  const $group = $elem.parents('.group')
-
-  const groupID = $group.data('group-id')
-
-  const groupFTeam = _.get(stages, `32.${groupID}[0]`, null)
-  const groupSTeam = _.get(stages, `32.${groupID}[1]`, null)
-
-  // reset brackets
-  GEN_BRACKETS_ORDER.forEach((bracketID) => {
-    stages[bracketID].matches = stages[bracketID].matches.map((match) => {
-      return match.map((team) => {
-        const condition1 = groupFTeam && team?.id === groupFTeam.id
-        const condition2 = groupSTeam && team?.id === groupSTeam.id
-
-        if (condition1 || condition2) {
-          return null
-        }
-
-        return team
+          return team
+        })
       })
     })
-  })
-  generateBrackets(GEN_BRACKETS_ORDER, stages, $brackets)
+    generateBrackets(GEN_BRACKETS_ORDER, stages, $brackets)
 
-  // reset 32
-  _.set(stages, `32.${groupID}`, [])
-  $group.replaceWith(generate32CardHTML(groupID, groups[groupID]))
-})
+    // reset 32
+    _.set(stages, `32.${groupID}`, [])
+    $group.replaceWith(generate32CardHTML(groupID, groups[groupID]))
+  })
 }
