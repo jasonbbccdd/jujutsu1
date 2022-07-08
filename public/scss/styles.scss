@@ -78,13 +78,8 @@ body {
             object-fit: cover;
           }
 
-          .bracket-winner-flag {
-            /* width: 100%;
-            height: 100%; */
-            width: auto;
-            height: 50px;
-            text-align: center;
-            object-fit: cover;
+          .bracket-loser {
+            filter: blur(5px);
           }
 
           #brackets [data-bracket-id="third"] .bracket-matches .match {

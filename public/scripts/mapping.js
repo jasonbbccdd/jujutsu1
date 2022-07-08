@@ -20,6 +20,13 @@ const flagURL = 'https://cf.eip.telegraph.co.uk/flags/'
 const size1x1 = '1x1/'
 const size4x3 = '4x3/'
 
+const semiFinalists = {
+  champion: '',
+  runnerUp: '',
+  thirdPlace: '',
+  fourthPlaces: ''
+}
+
 //  GLOBAL | Mapping
 const stages = {
   32: {},
@@ -234,15 +241,21 @@ const bindBrackets = ($brackets) => {
           _.set(stages, `${toStage}.matches[${toMatchIndex}][${toTeamIndex}]`, winningTeam)
         }
 
+        $(`[data-bracket-id=${bracketID}] [data-team-id=${losingTeam.id}]`).toggleClass('bracket-loser')
         generateBrackets(GEN_BRACKETS_ORDER, stages, $brackets)
       } else {
         // eslint-disable-next-line no-lonely-if
         if (bracketID === 'champion') {
-          championWinner = winningTeam
-          $(`[data-bracket-id=${bracketID}] [data-team-id=${winningTeam.id}]`).addClass('text-success')
+          // championWinner = winningTeam
+          semiFinalists.champion = winningTeam.id
+          semiFinalists.runnerUp = losingTeam.id
+          // $(`[data-bracket-id=${bracketID}] [data-team-id=${winningTeam.id}]`).toggleClass('bracket-loser')
+          // $(`[data-bracket-id=${bracketID}] [data-team-id=${losingTeam.id}]`).toggleClass('bracket-loser')
         } else {
-          thirdWinner = winningTeam
-          $(`[data-bracket-id=${bracketID}][data-team-id=${winningTeam.id}]`).addClass('text-success')
+          semiFinalists.champion = winningTeam.id
+          semiFinalists.runnerUp = losingTeam.id
+          // $(`[data-bracket-id=${bracketID}] [data-team-id=${winningTeam.id}]`).toggleClass('bracket-loser')
+          // $(`[data-bracket-id=${bracketID}] [data-team-id=${losingTeam.id}]`).toggleClass('bracket-loser')
         }
       }
     }
